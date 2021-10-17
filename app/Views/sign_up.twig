@@ -1,0 +1,27 @@
+{% extends "base.twig" %}
+
+{% block title %}Sign Up{% endblock %}
+{% block heading %}Sign Up{% endblock %}
+{% block content %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control w-25" id="username" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control w-25" id="password" name="password" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <label for="passwordConfirm" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control w-25" id="passwordConfirm" name="passwordConfirm"
+                   placeholder="Confirm Password">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
+    </form>
+    <div class="mb-3">
+        <a class="link-primary" href="/">Log In</a>
+    </div>
+{% endblock %}

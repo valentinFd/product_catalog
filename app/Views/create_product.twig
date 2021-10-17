@@ -1,0 +1,31 @@
+{% extends "base.twig" %}
+
+{% block title %}Add Product{% endblock %}
+{% block heading %}Add Product{% endblock %}
+{% block content %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control w-50" id="name" name="name" placeholder="Product Name">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select mb-3 w-25" id="category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.getName }}">{{ category.getName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control w-25" id="quantity" name="quantity" value="1">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </form>
+    <div class="mb-3">
+        <a href="/products" class="btn btn-primary" role="button">Back</a>
+    </div>
+{% endblock %}

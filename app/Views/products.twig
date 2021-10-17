@@ -1,0 +1,52 @@
+{% extends "base.twig" %}
+
+{% block title %}Products{% endblock %}
+{% block heading %}Products{% endblock %}
+{% block welcomeUser %}
+    <div class="col">
+        Hello, {{ username }}!
+    </div>
+    <div class="col">
+        <form method="post" action="/logOut">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+        </form>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <form method="get">
+        <select class="form-select mb-3 w-25" name="category" onchange="this.form.submit()">
+            <option value="all" {% if selectedCategory.getName is same as("all") %}selected{% endif %}>
+                All Categories
+            </option>
+            {% for category in categories %}
+                <option value="{{ category.getName }}"
+                        {% if selectedCategory.getName is same as(category.getName) %}selected{% endif %}>
+                    {{ category.getName }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" class="col-md-4">Name</th>
+                <th scope="col" class="col-md-4">Category</th>
+                <th scope="col" class="col-md-4">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td class="col-md-4"><a class="link-dark"
+                                            href="/products/{{ product.getId }}">{{ product.getName }}</a></td>
+                    <td class="col-md-4">{{ product.getCategory }}</td>
+                    <td class="col-md-4">{{ product.getQuantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-3">
+        <a href="/products/add" class="btn btn-primary" role="button">Add</a>
+    </div>
+{% endblock %}

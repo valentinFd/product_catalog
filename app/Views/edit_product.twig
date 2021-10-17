@@ -1,0 +1,39 @@
+{% extends "base.twig" %}
+
+{% block title %}Edit Product{% endblock %}
+{% block heading %}Edit Product{% endblock %}
+{% block content %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control w-50" id="name" name="name" value="{{ product.getName }}">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select mb-3 w-25" id="category" name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category.getName }}"
+                            {% if product.getCategory is same as (category.getName) %}selected{% endif %}>
+                        {{ category.getName }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control w-25" id="quantity" name="quantity"
+                   value="{{ product.getQuantity }}">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+    <form action="/products/{{ product.getId }}/delete" method="post">
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete product?')">Delete</button>
+        </div>
+    </form>
+    <div class="mb-3">
+        <a href="/products/{{ product.getId }}" class="btn btn-primary" role="button">Back</a>
+    </div>
+{% endblock %}
