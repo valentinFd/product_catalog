@@ -27,16 +27,9 @@ class UsersController
 
     public function index(): View
     {
-        if (empty($_SESSION["userId"]))
-        {
-            return new View("index.twig", [
-                "errors" => $_SESSION["errors"]
-            ]);
-        }
-        else
-        {
-            header("Location: /products");
-        }
+        return new View("index.twig", [
+            "errors" => $_SESSION["errors"]
+        ]);
     }
 
     public function logIn(): void
@@ -61,16 +54,9 @@ class UsersController
 
     public function signUp(): View
     {
-        if (empty($_SESSION["userId"]))
-        {
-            return new View("sign_up.twig", [
-                "errors" => $_SESSION["errors"]
-            ]);
-        }
-        else
-        {
-            header("Location: /products");
-        }
+        return new View("sign_up.twig", [
+            "errors" => $_SESSION["errors"]
+        ]);
     }
 
     public function create(): void

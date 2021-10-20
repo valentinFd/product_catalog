@@ -1,5 +1,8 @@
 <?php
 
+use App\Middleware\GuestMiddleware;
+use App\Middleware\LoggedInMiddleware;
+
 session_start();
 
 require_once("vendor/autoload.php");
@@ -44,9 +47,28 @@ switch ($routeInfo[0])
         echo $twig->render("405_not_allowed.twig");
         break;
     case FastRoute\Dispatcher::FOUND:
-        [$handler, $method] = explode("@", $routeInfo[1]);
+        switch ($routeInfo[1])
+        {
+            case "App\Controllers\UsersController@index":
+            case "App\Controllers\UsersController@logIn":
+            case "App\Controllers\UsersController@logOut":
+            case "App\Controllers\UsersController@signUp":
+            case "App\Controllers\UsersController@create":
+                LoggedInMiddleware::handle();
+                break;
+            case "App\Controllers\ProductsController@index":
+            case "App\Controllers\ProductsController@add":
+            case "App\Controllers\ProductsController@create":
+            case "App\Controllers\ProductsController@show":
+            case "App\Controllers\ProductsController@edit":
+            case "App\Controllers\ProductsController@update":
+            case "App\Controllers\ProductsController@delete":
+                GuestMiddleware::handle();
+                break;
+        }
+        [$controller, $method] = explode("@", $routeInfo[1]);
         $vars = $routeInfo[2];
-        $response = (new $handler())->$method(...array_values($vars));
+        $response = (new $controller())->$method(...array_values($vars));
         if (is_a($response, "App\View"))
         {
             echo $twig->render($response->getTemplate(), $response->getArgs());

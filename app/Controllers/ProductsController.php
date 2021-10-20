@@ -35,8 +35,6 @@ class ProductsController
 
     public function index(): View
     {
-        if (empty($_SESSION["userId"])) header("Location: /");
-
         $user = $this->usersRepository->get($_SESSION["userId"]);
         $categoriesCollection = $this->categoriesRepository->getAll();
 
@@ -53,8 +51,6 @@ class ProductsController
 
     public function add(): View
     {
-        if (empty($_SESSION["userId"])) header("Location: /");
-
         $categoriesCollection = $this->categoriesRepository->getAll();
         return new View("create_product.twig", [
             "categories" => $categoriesCollection->getCategories(),
@@ -80,8 +76,6 @@ class ProductsController
 
     public function show(int $id): View
     {
-        if (empty($_SESSION["userId"])) header("Location: /");
-
         $productsCollection = $this->productsRepository->getAll(new Category("all"));
         $product = $productsCollection->search($id);
         if ($product === null) return new View("404_not_found.twig");
@@ -95,8 +89,6 @@ class ProductsController
 
     public function edit(int $id): View
     {
-        if (empty($_SESSION["userId"])) header("Location: /");
-
         $categoriesCollection = $this->categoriesRepository->getAll();
 
         $productsCollection = $this->productsRepository->getAll(new Category("all"));
