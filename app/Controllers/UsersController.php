@@ -6,6 +6,7 @@ use App\Exceptions\LogInException;
 use App\Exceptions\SignUpException;
 use App\Models\User;
 use App\Repositories\MySQLUsersRepository;
+use App\Services\Users\CreateUserService;
 use App\Validators\SignUpValidator;
 use App\View;
 
@@ -13,16 +14,12 @@ class UsersController
 {
     private MySQLUsersRepository $usersRepository;
 
-    public function __construct()
+    private CreateUserService $createUserService;
+
+    public function __construct(MySQLUsersRepository $usersRepository, CreateUserService $createUserService)
     {
-        try
-        {
-            $this->usersRepository = new MySQLUsersRepository();
-        }
-        catch (\PDOException $e)
-        {
-            echo $e->getMessage();
-        }
+        $this->usersRepository = $usersRepository;
+        $this->createUserService = $createUserService;
     }
 
     public function index(): View
@@ -65,7 +62,7 @@ class UsersController
         {
             $validator = new SignUpValidator();
             $validator->validate($_POST);
-            $this->usersRepository->create(new User($_POST["username"], $_POST["password"]));
+            $this->createUserService->execute($_POST["username"], $_POST["password"]);
             header("Location: /");
         }
         catch (SignUpException $e)

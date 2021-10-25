@@ -51,7 +51,6 @@ switch ($routeInfo[0])
         {
             case "App\Controllers\UsersController@index":
             case "App\Controllers\UsersController@logIn":
-            case "App\Controllers\UsersController@logOut":
             case "App\Controllers\UsersController@signUp":
             case "App\Controllers\UsersController@create":
                 LoggedInMiddleware::handle();
@@ -63,12 +62,21 @@ switch ($routeInfo[0])
             case "App\Controllers\ProductsController@edit":
             case "App\Controllers\ProductsController@update":
             case "App\Controllers\ProductsController@delete":
+            case "App\Controllers\UsersController@logOut":
                 GuestMiddleware::handle();
                 break;
         }
+        $container = new DI\Container();
         [$controller, $method] = explode("@", $routeInfo[1]);
         $vars = $routeInfo[2];
-        $response = (new $controller())->$method(...array_values($vars));
+        try
+        {
+            $response = ($container->get($controller))->$method(...array_values($vars));
+        }
+        catch (\PDOException $e)
+        {
+            echo $e->getMessage();
+        }
         if (is_a($response, "App\View"))
         {
             echo $twig->render($response->getTemplate(), $response->getArgs());
